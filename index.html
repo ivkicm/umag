@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Umag News Radar Split XXL</title>
+    <title>Umag News Split XXL</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@800;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     <style>
         body, html { 
@@ -14,25 +14,17 @@
             overflow: hidden;
         }
         
-        .update-info {
-            position: fixed; top: 15px; right: 20px; z-index: 100;
-            background: rgba(0, 85, 164, 0.9); color: white;
-            padding: 5px 15px; border-radius: 8px;
-            font-family: 'JetBrains Mono'; font-size: 1.1rem;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5); border: 1px solid #ffffff;
-        }
-
         .slide {
             position: absolute; width: 100%; height: 100%;
             display: none; 
-            grid-template-columns: 0.9fr 1.1fr; /* SPLIT SCREEN: Bild links, Text rechts */
+            grid-template-columns: 0.9fr 1.1fr; 
             align-items: center; gap: 50px; padding: 40px;
         }
         .slide.active { display: grid; animation: fadeIn 0.8s ease-in; }
 
         /* LINKE SEITE: BILD */
         .image-side { 
-            width: 100%; height: 85vh; 
+            width: 100%; height: 88vh; 
             border-radius: 30px; overflow: hidden;
             border: 4px solid #333; box-shadow: 0 20px 60px rgba(0,0,0,0.8);
         }
@@ -44,21 +36,25 @@
         }
 
         .meta-line { display: flex; gap: 25px; align-items: center; margin-bottom: 30px; }
+        
+        /* Badge jetzt in weißer Schrift und ohne ISTRAIN */
         .source-badge { 
-            background: #0055a4; color: white; padding: 5px 15px; border-radius: 8px;
-            font-weight: 900; font-size: 2.2rem; text-transform: uppercase; letter-spacing: 2px;
+            border: 4px solid white; color: white; padding: 5px 20px; border-radius: 10px;
+            font-weight: 900; font-size: 2.4rem; text-transform: uppercase; letter-spacing: 2px;
         }
-        .pub-time { color: #ccc; font-family: 'JetBrains Mono'; font-size: 2.2rem; font-weight: 700; }
+        
+        /* Uhrzeit in weißer Schrift */
+        .pub-time { color: white; font-family: 'JetBrains Mono'; font-size: 2.4rem; font-weight: 700; }
 
         .title { 
-            font-size: 4.4rem; font-weight: 900; line-height: 1.1; 
-            text-transform: uppercase; letter-spacing: -2px; margin-bottom: 30px;
+            font-size: 4.8rem; font-weight: 900; line-height: 1.05; 
+            text-transform: uppercase; letter-spacing: -2px; margin-bottom: 35px;
             color: #ffffff; text-shadow: 0 4px 15px rgba(0,0,0,0.5);
             display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
         }
 
         .description {
-            font-size: 2.6rem; color: #bbb; line-height: 1.3;
+            font-size: 2.8rem; color: #ccc; line-height: 1.35;
             display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden;
         }
 
@@ -66,7 +62,6 @@
     </style>
 </head>
 <body>
-    <div class="update-info">UPDATE: 24.12.2025 - 14:48</div>
     
         <div class="slide active">
             <div class="image-side">
@@ -74,7 +69,7 @@
             </div>
             <div class="text-side">
                 <div class="meta-line">
-                    <span class="source-badge">ISTRAIN UMAG</span>
+                    <span class="source-badge">UMAG</span>
                     <span class="pub-time">22.12. 09:02</span>
                 </div>
                 <div class="title">Bacao petarde i vozio prejak romobil: Maloljetnik zaradio prijavu, uključilo se i socijalno</div>
@@ -88,7 +83,7 @@
             </div>
             <div class="text-side">
                 <div class="meta-line">
-                    <span class="source-badge">ISTRAIN UMAG</span>
+                    <span class="source-badge">UMAG</span>
                     <span class="pub-time">21.12. 11:42</span>
                 </div>
                 <div class="title">Kod maloljetnika u blizini škole pronađena pirotehnika! Policija obavijestila i Socijalnu!</div>
@@ -102,7 +97,7 @@
             </div>
             <div class="text-side">
                 <div class="meta-line">
-                    <span class="source-badge">ISTRAIN UMAG</span>
+                    <span class="source-badge">UMAG</span>
                     <span class="pub-time">20.12. 17:23</span>
                 </div>
                 <div class="title">Gdje dočekati Novu 2026. u Istri? Evo tko nastupa i gdje se sve slavi...</div>
@@ -116,7 +111,7 @@
             </div>
             <div class="text-side">
                 <div class="meta-line">
-                    <span class="source-badge">ISTRAIN UMAG</span>
+                    <span class="source-badge">UMAG</span>
                     <span class="pub-time">20.12. 12:13</span>
                 </div>
                 <div class="title">Umag i ove godine rekorder po iznosima božićnica!</div>
@@ -130,7 +125,7 @@
             </div>
             <div class="text-side">
                 <div class="meta-line">
-                    <span class="source-badge">ISTRAIN UMAG</span>
+                    <span class="source-badge">UMAG</span>
                     <span class="pub-time">18.12. 17:23</span>
                 </div>
                 <div class="title">Prometna nesreća u Umagu: pijani vozač udario u stup pa pobjegao!</div>
@@ -144,7 +139,7 @@
             </div>
             <div class="text-side">
                 <div class="meta-line">
-                    <span class="source-badge">ISTRAIN UMAG</span>
+                    <span class="source-badge">UMAG</span>
                     <span class="pub-time">18.12. 12:42</span>
                 </div>
                 <div class="title">Policija u Istri ponovno ulovila maloljetnike sa zabranjenom pirotehnikom, prijava ide i socijalnom!</div>
@@ -158,7 +153,7 @@
             </div>
             <div class="text-side">
                 <div class="meta-line">
-                    <span class="source-badge">ISTRAIN UMAG</span>
+                    <span class="source-badge">UMAG</span>
                     <span class="pub-time">16.12. 10:29</span>
                 </div>
                 <div class="title">Foto: Službeno otvorena uređena šetnica u samom centru Umaga</div>
@@ -172,7 +167,7 @@
             </div>
             <div class="text-side">
                 <div class="meta-line">
-                    <span class="source-badge">ISTRAIN UMAG</span>
+                    <span class="source-badge">UMAG</span>
                     <span class="pub-time">12.12. 09:12</span>
                 </div>
                 <div class="title">Sadnja 368 novih stabala: Umag kontinuirano i odgovorno širi zelene površine sustavnim akcijama sadnje</div>
@@ -186,7 +181,7 @@
             </div>
             <div class="text-side">
                 <div class="meta-line">
-                    <span class="source-badge">ISTRAIN UMAG</span>
+                    <span class="source-badge">UMAG</span>
                     <span class="pub-time">10.12. 18:53</span>
                 </div>
                 <div class="title">Usvojen najveći Proračun u povijesti Umaga! Prioritet su djeca, obrazovanje i infrastruktura</div>
@@ -200,7 +195,7 @@
             </div>
             <div class="text-side">
                 <div class="meta-line">
-                    <span class="source-badge">ISTRAIN UMAG</span>
+                    <span class="source-badge">UMAG</span>
                     <span class="pub-time">10.12. 15:12</span>
                 </div>
                 <div class="title">Grad Umag nagradio volonterku godine – Ivu Jakac Brajković</div>
@@ -218,7 +213,7 @@
             current = (current + 1) % slides.length;
             slides[current].classList.add('active');
         }
-        setInterval(nextSlide, 12000); // 12 Sekunden pro News
+        setInterval(nextSlide, 15000); // 15 Sekunden pro News für bessere Lesbarkeit
         setTimeout(() => { location.reload(); }, 3600000);
     </script>
 </body>
