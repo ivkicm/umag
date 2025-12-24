@@ -5,30 +5,14 @@ from datetime import datetime
 import pytz
 import re
 
-def get_relative_time_string(date_str, time_str):
-    """Berechnet die vergangene Zeit."""
+def format_umag_date(date_str, time_str):
+    """Wandelt 22.12.2025 und 09:02 in 22.12. 09:02 um."""
     try:
-        tz = pytz.timezone('Europe/Zagreb')
-        # Format: 22.12.2025 | 09:02
-        dt_str = f"{date_str} {time_str}"
-        dt = datetime.strptime(dt_str, "%d.%m.%Y %H:%M")
-        dt = tz.localize(dt)
-        
-        now = datetime.now(tz)
-        diff = now - dt
-        seconds = diff.total_seconds()
-        
-        if seconds < 0: return "GERADE EBEN"
-        if seconds < 3600:
-            mins = int(seconds / 60)
-            return f"VOR {max(1, mins)} MINUTEN"
-        elif seconds < 86400:
-            hours = int(seconds / 3600)
-            return f"VOR {hours} {'STUNDE' if hours == 1 else 'STUNDEN'}"
-        else:
-            return dt.strftime("%d.%m. %H:%M")
+        # Nur Tag und Monat behalten (ersten zwei Teile von DD.MM.YYYY)
+        day_month = ".".join(date_str.split('.')[:2]) + "."
+        return f"{day_month} {time_str}"
     except:
-        return "AKTUELL"
+        return f"{date_str} {time_str}"
 
 def get_news():
     url = "https://istrain.hr/gradovi/8/umag"
@@ -50,7 +34,7 @@ def get_news():
                 desc_el = art.select_one('.news-item-description')
                 img_el = art.select_one('img')
                 
-                # Datum und Uhrzeit extrahieren
+                # Datum und Uhrzeit aus den spezifischen Feldern extrahieren
                 time_val = art.select_one('.time-published').get_text(strip=True) if art.select_one('.time-published') else ""
                 date_val = art.select_one('.date-published').get_text(strip=True) if art.select_one('.date-published') else ""
                 
@@ -62,27 +46,34 @@ def get_news():
                     img_url = img_path
 
                 if title_el:
-                    rel_time = get_relative_time_string(date_val, time_val)
+                    # Formatiere Datum zu: 12.12. 09:12
+                    display_time = format_umag_date(date_val, time_val)
+                    
+                    # Hilfs-Zeitstempel für die Sortierung (ISO Format)
+                    try:
+                        sort_dt = datetime.strptime(f"{date_val} {time_val}", "%d.%m.%Y %H:%M")
+                    except:
+                        sort_dt = datetime.now()
+
                     news_data.append({
                         'title': title_el.get_text(strip=True),
                         'desc': desc_el.get_text(strip=True) if desc_el else "",
                         'image': img_url,
-                        'rel_time': rel_time,
-                        'source': 'ISTRAIN UMAG'
+                        'display_time': display_time,
+                        'sort_dt': sort_dt
                     })
             except: continue
 
+        # Chronologisch sortieren (Neueste zuerst)
+        news_data.sort(key=lambda x: x['sort_dt'], reverse=True)
         return news_data
     except Exception as e:
         print(f"Scraping Fehler: {e}")
         return []
 
 def generate_html(news):
-    tz = pytz.timezone('Europe/Zagreb')
-    now = datetime.now(tz).strftime("%d.%m.%Y - %H:%M")
-    
     if not news:
-        news = [{'title': 'Lade Nachrichten...', 'desc': 'Suche nach aktuellen Meldungen für Umag.', 'image': '', 'rel_time': 'INFO', 'source': 'SYSTEM'}]
+        news = [{'title': 'Lade Nachrichten...', 'desc': 'Suche nach aktuellen Meldungen für Umag.', 'image': '', 'display_time': '--.--. --:--'}]
 
     slides_html = ""
     for i, item in enumerate(news):
@@ -96,8 +87,8 @@ def generate_html(news):
             </div>
             <div class="text-side">
                 <div class="meta-line">
-                    <span class="source-badge">{item['source']}</span>
-                    <span class="pub-time">{item['rel_time']}</span>
+                    <span class="source-badge">UMAG</span>
+                    <span class="pub-time">{item['display_time']}</span>
                 </div>
                 <div class="title">{item['title']}</div>
                 <div class="description">{item['desc']}</div>
@@ -112,7 +103,7 @@ def generate_html(news):
     <meta charset="UTF-8">
     <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Umag News Radar Split XXL</title>
+    <title>Umag News Split XXL</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@800;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     <style>
         body, html {{ 
@@ -121,25 +112,17 @@ def generate_html(news):
             overflow: hidden;
         }}
         
-        .update-info {{
-            position: fixed; top: 15px; right: 20px; z-index: 100;
-            background: rgba(0, 85, 164, 0.9); color: white;
-            padding: 5px 15px; border-radius: 8px;
-            font-family: 'JetBrains Mono'; font-size: 1.1rem;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5); border: 1px solid #ffffff;
-        }}
-
         .slide {{
             position: absolute; width: 100%; height: 100%;
             display: none; 
-            grid-template-columns: 0.9fr 1.1fr; /* SPLIT SCREEN: Bild links, Text rechts */
+            grid-template-columns: 0.9fr 1.1fr; 
             align-items: center; gap: 50px; padding: 40px;
         }}
         .slide.active {{ display: grid; animation: fadeIn 0.8s ease-in; }}
 
         /* LINKE SEITE: BILD */
         .image-side {{ 
-            width: 100%; height: 85vh; 
+            width: 100%; height: 88vh; 
             border-radius: 30px; overflow: hidden;
             border: 4px solid #333; box-shadow: 0 20px 60px rgba(0,0,0,0.8);
         }}
@@ -151,21 +134,25 @@ def generate_html(news):
         }}
 
         .meta-line {{ display: flex; gap: 25px; align-items: center; margin-bottom: 30px; }}
+        
+        /* Badge jetzt in weißer Schrift und ohne ISTRAIN */
         .source-badge {{ 
-            background: #0055a4; color: white; padding: 5px 15px; border-radius: 8px;
-            font-weight: 900; font-size: 2.2rem; text-transform: uppercase; letter-spacing: 2px;
+            border: 4px solid white; color: white; padding: 5px 20px; border-radius: 10px;
+            font-weight: 900; font-size: 2.4rem; text-transform: uppercase; letter-spacing: 2px;
         }}
-        .pub-time {{ color: #ccc; font-family: 'JetBrains Mono'; font-size: 2.2rem; font-weight: 700; }}
+        
+        /* Uhrzeit in weißer Schrift */
+        .pub-time {{ color: white; font-family: 'JetBrains Mono'; font-size: 2.4rem; font-weight: 700; }}
 
         .title {{ 
-            font-size: 4.4rem; font-weight: 900; line-height: 1.1; 
-            text-transform: uppercase; letter-spacing: -2px; margin-bottom: 30px;
+            font-size: 4.8rem; font-weight: 900; line-height: 1.05; 
+            text-transform: uppercase; letter-spacing: -2px; margin-bottom: 35px;
             color: #ffffff; text-shadow: 0 4px 15px rgba(0,0,0,0.5);
             display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
         }}
 
         .description {{
-            font-size: 2.6rem; color: #bbb; line-height: 1.3;
+            font-size: 2.8rem; color: #ccc; line-height: 1.35;
             display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden;
         }}
 
@@ -173,7 +160,6 @@ def generate_html(news):
     </style>
 </head>
 <body>
-    <div class="update-info">UPDATE: {now}</div>
     {slides_html}
 
     <script>
@@ -185,7 +171,7 @@ def generate_html(news):
             current = (current + 1) % slides.length;
             slides[current].classList.add('active');
         }}
-        setInterval(nextSlide, 12000); // 12 Sekunden pro News
+        setInterval(nextSlide, 15000); // 15 Sekunden pro News für bessere Lesbarkeit
         setTimeout(() => {{ location.reload(); }}, 3600000);
     </script>
 </body>
