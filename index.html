@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umag News Radar XXL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@800;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            background-color: black; color: white; font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+        .header-info {
+            position: fixed; top: 15px; right: 20px; z-index: 100;
+            background: rgba(0, 51, 102, 0.9); color: white;
+            padding: 5px 15px; border-radius: 8px;
+            font-family: 'JetBrains Mono'; font-size: 1.2rem;
+            font-weight: 800; box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            border: 1px solid #ffcc00;
+        }
+        .slide {
+            position: absolute; width: 100%; height: 100%;
+            display: none; flex-direction: column;
+        }
+        .slide.active { display: flex; animation: fadeIn 0.8s ease-in; }
+        .image-container { width: 100%; height: 55vh; position: relative; overflow: hidden; }
+        .image-container img { 
+            width: 100%; height: 100%; object-fit: cover; 
+            object-position: center top; border-bottom: 6px solid #ffcc00; 
+        }
+        .img-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 25%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        }
+        .content-box { 
+            flex: 1; padding: 30px 60px; 
+            background: linear-gradient(to bottom, #001a33, #000);
+            display: flex; flex-direction: column; justify-content: flex-start;
+        }
+        .meta-line { display: flex; gap: 30px; align-items: center; margin-bottom: 20px; }
+        .source { color: #ffcc00; font-weight: 900; font-size: 3rem; letter-spacing: 2px; }
+        .pub-time { color: #ffffff; font-family: 'JetBrains Mono'; font-size: 2.8rem; font-weight: 800; opacity: 0.8; }
+        .title { 
+            font-size: 4.5rem; font-weight: 900; line-height: 1.05; 
+            text-transform: uppercase; letter-spacing: -2px; color: #ffffff;
+            display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+    <div class="header-info">UMAG INFO: 24.12.2025 - 14:15</div>
+    
+        <div class="slide active">
+            <div class="image-container">
+                <img src="https://umag.hr/uploaded/Sretno-Auguri-1766568430438.JPG" onerror="this.src='https://placehold.co/1200x630/003366/FFFFFF?text=UMAG+VIJESTI'">
+                <div class="img-overlay"></div>
+            </div>
+            <div class="content-box">
+                <div class="meta-line">
+                    <span class="source">UMAG.HR</span>
+                    <span class="pub-time">24.12.2025.</span>
+                </div>
+                <div class="title">Sretan Božić! - Buon Natale!</div>
+            </div>
+        </div>
+        
+        <div class="slide ">
+            <div class="image-container">
+                <img src="https://umag.hr/uploaded/Novouredjena-setnica-Dom-zdravlja-OS-Marije-i-Line-Umag (7)-1765876169091.jpg" onerror="this.src='https://placehold.co/1200x630/003366/FFFFFF?text=UMAG+VIJESTI'">
+                <div class="img-overlay"></div>
+            </div>
+            <div class="content-box">
+                <div class="meta-line">
+                    <span class="source">UMAG.HR</span>
+                    <span class="pub-time">16.12.2025.</span>
+                </div>
+                <div class="title">Službeno otvorena prekrasna uređena šetnica u samom centru Umaga</div>
+            </div>
+        </div>
+        
+        <div class="slide ">
+            <div class="image-container">
+                <img src="https://umag.hr/uploaded/02-1765789960205.jpg" onerror="this.src='https://placehold.co/1200x630/003366/FFFFFF?text=UMAG+VIJESTI'">
+                <div class="img-overlay"></div>
+            </div>
+            <div class="content-box">
+                <div class="meta-line">
+                    <span class="source">UMAG.HR</span>
+                    <span class="pub-time">15.12.2025.</span>
+                </div>
+                <div class="title">Značajna ulaganja u javnu rasvjetu: Grad Umag nastavlja s LED mod...</div>
+            </div>
+        </div>
+        
+        <div class="slide ">
+            <div class="image-container">
+                <img src="https://umag.hr/uploaded/IMG-20251211-WA0007-1765523234598.jpg" onerror="this.src='https://placehold.co/1200x630/003366/FFFFFF?text=UMAG+VIJESTI'">
+                <div class="img-overlay"></div>
+            </div>
+            <div class="content-box">
+                <div class="meta-line">
+                    <span class="source">UMAG.HR</span>
+                    <span class="pub-time">12.12.2025.</span>
+                </div>
+                <div class="title">Sadnja 368 novih stabala: Umag kontinuirano i odgovorno širi zele...</div>
+            </div>
+        </div>
+        
+        <div class="slide ">
+            <div class="image-container">
+                <img src="https://umag.hr/uploaded/Gradska uprava-1765372639378.jpg" onerror="this.src='https://placehold.co/1200x630/003366/FFFFFF?text=UMAG+VIJESTI'">
+                <div class="img-overlay"></div>
+            </div>
+            <div class="content-box">
+                <div class="meta-line">
+                    <span class="source">UMAG.HR</span>
+                    <span class="pub-time">10.12.2025.</span>
+                </div>
+                <div class="title">Stabilnost i razvoj: Usvojen najveći Proračun u povijesti Grada U...</div>
+            </div>
+        </div>
+        
+        <div class="slide ">
+            <div class="image-container">
+                <img src="https://img.24sata.hr/wD8MzliZYcQK0y8YxmqTG5Ib8-o=/640x480/smart/media/images/2025-51/pxl-100912-896_8pAPxnA.jpg" onerror="this.src='https://placehold.co/1200x630/003366/FFFFFF?text=UMAG+VIJESTI'">
+                <div class="img-overlay"></div>
+            </div>
+            <div class="content-box">
+                <div class="meta-line">
+                    <span class="source">24SATA</span>
+                    <span class="pub-time">24 Sata</span>
+                </div>
+                <div class="title">Umaški vatrogasci krenuli u štrajk, traže veće plaće</div>
+            </div>
+        </div>
+        
+        <div class="slide ">
+            <div class="image-container">
+                <img src="https://img.24sata.hr/arOdVzbwHtuEmh9VunzjBGlTeIA=/640x480/smart/media/images/2025-47/images-2024-44-pxl-311024-123332467.jpg" onerror="this.src='https://placehold.co/1200x630/003366/FFFFFF?text=UMAG+VIJESTI'">
+                <div class="img-overlay"></div>
+            </div>
+            <div class="content-box">
+                <div class="meta-line">
+                    <span class="source">24SATA</span>
+                    <span class="pub-time">24 Sata</span>
+                </div>
+                <div class="title">Kaznena prijava protiv mladića (29) koji je provalio u osnovnu školu u Umagu</div>
+            </div>
+        </div>
+        
+        <div class="slide ">
+            <div class="image-container">
+                <img src="https://img.24sata.hr/Bh-2MWd4gpsNFVbaOVRkMeeO6_c=/640x480/smart/media/images/2025-48/dizajn-bez-naslova_N6NFXpV.png" onerror="this.src='https://placehold.co/1200x630/003366/FFFFFF?text=UMAG+VIJESTI'">
+                <div class="img-overlay"></div>
+            </div>
+            <div class="content-box">
+                <div class="meta-line">
+                    <span class="source">24SATA</span>
+                    <span class="pub-time">24 Sata</span>
+                </div>
+                <div class="title">DRAMA U UMAGU Kamion i auto propali u veliku septičku jamu!</div>
+            </div>
+        </div>
+        
+        <div class="slide ">
+            <div class="image-container">
+                <img src="https://img.24sata.hr/sXNxTmW7if69TTNV_qAL89vbsvg=/640x480/smart/media/images/2025-35/dizajn-bez-naslova-21.png" onerror="this.src='https://placehold.co/1200x630/003366/FFFFFF?text=UMAG+VIJESTI'">
+                <div class="img-overlay"></div>
+            </div>
+            <div class="content-box">
+                <div class="meta-line">
+                    <span class="source">24SATA</span>
+                    <span class="pub-time">24 Sata</span>
+                </div>
+                <div class="title">Kako protiv oluja: Interes i zarada još su važniji od planeta</div>
+            </div>
+        </div>
+        
+        <div class="slide ">
+            <div class="image-container">
+                <img src="https://img.24sata.hr/708UiAdRjT9ysyWyZJUcSWzUXS4=/640x480/smart/media/images/2025-35/d126a14d-d27e-4787-ba6e-3a94679bc471.jfif" onerror="this.src='https://placehold.co/1200x630/003366/FFFFFF?text=UMAG+VIJESTI'">
+                <div class="img-overlay"></div>
+            </div>
+            <div class="content-box">
+                <div class="meta-line">
+                    <span class="source">24SATA</span>
+                    <span class="pub-time">24 Sata</span>
+                </div>
+                <div class="title">VIDEO  Poplava na groblju u Umagu, pod vodom je i Rab</div>
+            </div>
+        </div>
+        
+        <div class="slide ">
+            <div class="image-container">
+                <img src="https://ip.index.hr/remote/bucket.index.hr/b/index/58e2bcfe-7bc7-4577-8578-f93fa446631d.png?width=1200&height=630&mode=crop" onerror="this.src='https://placehold.co/1200x630/003366/FFFFFF?text=UMAG+VIJESTI'">
+                <div class="img-overlay"></div>
+            </div>
+            <div class="content-box">
+                <div class="meta-line">
+                    <span class="source">INDEX.HR</span>
+                    <span class="pub-time">22.12.2025.</span>
+                </div>
+                <div class="title">Vatrogasci u Umagu u štrajku. Traže veće plaće</div>
+            </div>
+        </div>
+        
+        <div class="slide ">
+            <div class="image-container">
+                <img src="https://ip.index.hr/remote/bucket.index.hr/b/index/4931463b-fc4f-4e32-93f4-3043c0733b9d.png?width=1200&height=630&mode=crop" onerror="this.src='https://placehold.co/1200x630/003366/FFFFFF?text=UMAG+VIJESTI'">
+                <div class="img-overlay"></div>
+            </div>
+            <div class="content-box">
+                <div class="meta-line">
+                    <span class="source">INDEX.HR</span>
+                    <span class="pub-time">17.12.2025.</span>
+                </div>
+                <div class="title">Xzibit stiže na Sea Star u Umag</div>
+            </div>
+        </div>
+        
+        <div class="slide ">
+            <div class="image-container">
+                <img src="https://ip.index.hr/remote/bucket.index.hr/b/index/81c7c739-b991-4a29-8adb-789b7688ea2f.png?width=1200&height=630&mode=crop" onerror="this.src='https://placehold.co/1200x630/003366/FFFFFF?text=UMAG+VIJESTI'">
+                <div class="img-overlay"></div>
+            </div>
+            <div class="content-box">
+                <div class="meta-line">
+                    <span class="source">INDEX.HR</span>
+                    <span class="pub-time">8.12.2025.</span>
+                </div>
+                <div class="title">Božićnice umirovljenicima daju i gradovi i općine, iznose od 30 do 600 eura</div>
+            </div>
+        </div>
+        
+        <div class="slide ">
+            <div class="image-container">
+                <img src="https://ip.index.hr/remote/bucket.index.hr/b/index/c9ab649b-ce1f-441d-bad7-ef75877552a4.png?width=1200&height=630&mode=crop" onerror="this.src='https://placehold.co/1200x630/003366/FFFFFF?text=UMAG+VIJESTI'">
+                <div class="img-overlay"></div>
+            </div>
+            <div class="content-box">
+                <div class="meta-line">
+                    <span class="source">INDEX.HR</span>
+                    <span class="pub-time">2.12.2025.</span>
+                </div>
+                <div class="title">Policija presrela "božićne poklone". Slovencu zaplijenjeno preko 11 kg trave</div>
+            </div>
+        </div>
+        
+        <div class="slide ">
+            <div class="image-container">
+                <img src="https://ip.index.hr/remote/bucket.index.hr/b/index/61c70193-4fa4-4aa1-a139-b17e55c4aa83.png?width=1200&height=630&mode=crop" onerror="this.src='https://placehold.co/1200x630/003366/FFFFFF?text=UMAG+VIJESTI'">
+                <div class="img-overlay"></div>
+            </div>
+            <div class="content-box">
+                <div class="meta-line">
+                    <span class="source">INDEX.HR</span>
+                    <span class="pub-time">27.11.2025.</span>
+                </div>
+                <div class="title">Umaški vatrogasci najavili štrajk zbog niskih plaća</div>
+            </div>
+        </div>
+        
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let current = 0;
+        function nextSlide() {
+            if (slides.length <= 1) return;
+            slides[current].classList.remove('active');
+            current = (current + 1) % slides.length;
+            slides[current].classList.add('active');
+        }
+        setInterval(nextSlide, 12000); 
+        setTimeout(() => { location.reload(); }, 3600000);
+    </script>
+</body>
+</html>
+    
