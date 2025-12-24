@@ -4,113 +4,81 @@ import os
 from datetime import datetime
 import pytz
 
-def get_umag_hr():
-    """Scrapt die offizielle Seite umag.hr"""
-    url = "https://umag.hr/novosti"
-    base = "https://umag.hr"
-    headers = {'User-Agent': 'Mozilla/5.0'}
-    items = []
+def get_istrain_news():
+    url = "https://istrain.hr/gradovi/8/umag"
+    base_url = "https://istrain.hr"
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
+    }
+    
+    news_data = []
     try:
-        r = requests.get(url, headers=headers, timeout=15)
-        soup = BeautifulSoup(r.text, 'html.parser')
-        # Basierend auf dem Snippet: Container ist _1yW2E1iJ
-        articles = soup.select('._1yW2E1iJ')
-        for art in articles[:5]:
-            title_el = art.select_one('._2PvPhQDR')
-            date_el = art.select_one('.FqqoTFMg')
-            img_el = art.select_one('img')
-            link_el = art.select_one('a')
-            
-            if title_el:
-                img_url = img_el['src'] if img_el else ""
-                if img_url.startswith('/'): img_url = base + img_url
+        response = requests.get(url, headers=headers, timeout=15)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        # Suche alle Artikel
+        articles = soup.select('article.news-item')
+        
+        for art in articles[:10]: # Top 10 News
+            try:
+                # Titel
+                title_el = art.select_one('.news-item-title a')
+                title = title_el.get_text(strip=True)
                 
-                items.append({
-                    'title': title_el.get_text(strip=True),
-                    'image': img_url,
-                    'date': date_el.get_text(strip=True) if date_el else "Novo",
-                    'source': 'UMAG.HR'
-                })
-    except: pass
-    return items
-
-def get_24sata_umag():
-    """Scrapt 24sata.hr Tag Umag"""
-    url = "https://www.24sata.hr/tagovi/umag-7674"
-    headers = {'User-Agent': 'Mozilla/5.0'}
-    items = []
-    try:
-        r = requests.get(url, headers=headers, timeout=15)
-        soup = BeautifulSoup(r.text, 'html.parser')
-        articles = soup.select('.article_wrap')
-        for art in articles[:5]:
-            title_el = art.select_one('.card__title')
-            img_el = art.select_one('img')
-            if title_el:
-                img_url = img_el['src'] if img_el else ""
-                # Qualität bei 24sata Bildern verbessern
-                img_url = img_url.replace('/120x120/', '/640x480/')
+                # Bild extrahieren und Pfad vervollständigen
+                img_el = art.select_one('img')
+                img_path = img_el.get('src') if img_el else ""
+                if img_path.startswith('/'):
+                    img_url = base_url + img_path
+                else:
+                    img_url = img_path
                 
-                items.append({
-                    'title': title_el.get_text(strip=True),
-                    'image': img_url,
-                    'date': "24 Sata",
-                    'source': '24SATA'
-                })
-    except: pass
-    return items
+                # Datum und Uhrzeit
+                time_val = art.select_one('.time-published').get_text(strip=True) if art.select_one('.time-published') else ""
+                date_val = art.select_one('.date-published').get_text(strip=True) if art.select_one('.date-published') else ""
+                
+                # Kategorie (Optional für Anzeige)
+                category = art.select_one('.news-item-category').get_text(strip=True) if art.select_one('.news-item-category') else "UMAG"
 
-def get_index_umag():
-    """Scrapt index.hr Tag Umag"""
-    url = "https://www.index.hr/tag/32559/umag.aspx"
-    headers = {'User-Agent': 'Mozilla/5.0'}
-    items = []
-    try:
-        r = requests.get(url, headers=headers, timeout=15)
-        soup = BeautifulSoup(r.text, 'html.parser')
-        # Erster großer Artikel
-        first = soup.select_one('.first-news-holder')
-        if first:
-            items.append({
-                'title': first.select_one('.title').get_text(strip=True),
-                'image': first.select_one('img')['src'],
-                'date': first.select_one('.publish-date').get_text(strip=True),
-                'source': 'INDEX.HR'
-            })
-        # Weitere Artikel
-        grid = soup.select('.grid-item')
-        for art in grid[:4]:
-            items.append({
-                'title': art.select_one('.title').get_text(strip=True),
-                'image': art.select_one('img')['src'],
-                'date': art.select_one('.publish-date').get_text(strip=True),
-                'source': 'INDEX.HR'
-            })
-    except: pass
-    return items
+                if title:
+                    news_data.append({
+                        'title': title,
+                        'image': img_url,
+                        'time_str': time_val,
+                        'date_str': date_val,
+                        'category': category
+                    })
+            except: continue
+
+        return news_data
+    except Exception as e:
+        print(f"Scraping Fehler: {e}")
+        return []
 
 def generate_html(news):
     tz = pytz.timezone('Europe/Zagreb')
     now = datetime.now(tz).strftime("%d.%m.%Y - %H:%M")
     
+    if not news:
+        news = [{'title': 'Tražim najnovije vijesti za Umag...', 'image': '', 'time_str': '', 'date_str': '', 'category': 'INFO'}]
+
     slides_html = ""
     for i, item in enumerate(news):
         active_class = "active" if i == 0 else ""
-        img_url = item['image']
-        # Index Bilder für XXL schärfen
-        if 'index.hr' in img_url and '?' in img_url:
-            img_url = img_url.split('?')[0] + "?width=1200&height=630&mode=crop"
+        
+        # Fallback Bild falls keins gefunden wurde
+        img_url = item['image'] if item['image'] else "https://placehold.co/1200x630/003366/FFFFFF?text=ISTRAIN+UMAG"
 
         slides_html += f"""
         <div class="slide {active_class}">
             <div class="image-container">
-                <img src="{img_url}" onerror="this.src='https://placehold.co/1200x630/003366/FFFFFF?text=UMAG+VIJESTI'">
+                <img src="{img_url}" alt="News Image">
                 <div class="img-overlay"></div>
             </div>
             <div class="content-box">
                 <div class="meta-line">
-                    <span class="source">{item['source']}</span>
-                    <span class="pub-time">{item['date']}</span>
+                    <span class="source">{item['category']}</span>
+                    <span class="pub-time">{item['date_str']} | {item['time_str']} UHR</span>
                 </div>
                 <div class="title">{item['title']}</div>
             </div>
@@ -124,7 +92,7 @@ def generate_html(news):
     <meta charset="UTF-8">
     <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Umag News Radar XXL</title>
+    <title>IstraIn Umag XXL</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@800;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     <style>
         body, html {{ 
@@ -132,65 +100,85 @@ def generate_html(news):
             background-color: black; color: white; font-family: 'Inter', sans-serif;
             overflow: hidden;
         }}
+        
         .header-info {{
             position: fixed; top: 15px; right: 20px; z-index: 100;
-            background: rgba(0, 51, 102, 0.9); color: white;
+            background: rgba(0, 85, 164, 0.9); color: white;
             padding: 5px 15px; border-radius: 8px;
             font-family: 'JetBrains Mono'; font-size: 1.2rem;
             font-weight: 800; box-shadow: 0 0 15px rgba(0,0,0,0.5);
-            border: 1px solid #ffcc00;
+            border: 1px solid #ffffff;
         }}
+
         .slide {{
             position: absolute; width: 100%; height: 100%;
             display: none; flex-direction: column;
         }}
         .slide.active {{ display: flex; animation: fadeIn 0.8s ease-in; }}
-        .image-container {{ width: 100%; height: 55vh; position: relative; overflow: hidden; }}
-        .image-container img {{ 
-            width: 100%; height: 100%; object-fit: cover; 
-            object-position: center top; border-bottom: 6px solid #ffcc00; 
+
+        .image-container {{ 
+            width: 100%; height: 55vh; position: relative; overflow: hidden; 
         }}
+        
+        .image-container img {{ 
+            width: 100%; height: 100%; 
+            object-fit: cover; 
+            object-position: center top; 
+            border-bottom: 8px solid #0055a4;
+        }}
+
         .img-overlay {{
             position: absolute; bottom: 0; left: 0; width: 100%; height: 25%;
             background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
         }}
+
         .content-box {{ 
             flex: 1; padding: 30px 60px; 
-            background: linear-gradient(to bottom, #001a33, #000);
+            background: linear-gradient(to bottom, #001122, #000);
             display: flex; flex-direction: column; justify-content: flex-start;
+            padding-top: 35px;
         }}
+
         .meta-line {{ display: flex; gap: 30px; align-items: center; margin-bottom: 20px; }}
-        .source {{ color: #ffcc00; font-weight: 900; font-size: 3rem; letter-spacing: 2px; }}
-        .pub-time {{ color: #ffffff; font-family: 'JetBrains Mono'; font-size: 2.8rem; font-weight: 800; opacity: 0.8; }}
+        .source {{ color: #0088ff; font-weight: 900; font-size: 2.8rem; letter-spacing: 3px; text-transform: uppercase; }}
+        .pub-time {{ color: #ffffff; font-family: 'JetBrains Mono'; font-size: 2.6rem; font-weight: 800; opacity: 0.9; }}
+
         .title {{ 
-            font-size: 4.5rem; font-weight: 900; line-height: 1.05; 
-            text-transform: uppercase; letter-spacing: -2px; color: #ffffff;
+            font-size: 4.2rem; font-weight: 900; line-height: 1.1; 
+            text-transform: uppercase; letter-spacing: -1px;
             display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }}
+
         @keyframes fadeIn {{ from {{ opacity: 0; }} to {{ opacity: 1; }} }}
     </style>
 </head>
 <body>
-    <div class="header-info">UMAG INFO: {now}</div>
+    <div class="header-info">ISTRAIN: {now}</div>
     {slides_html}
+
     <script>
         const slides = document.querySelectorAll('.slide');
         let current = 0;
+        
         function nextSlide() {{
             if (slides.length <= 1) return;
             slides[current].classList.remove('active');
             current = (current + 1) % slides.length;
             slides[current].classList.add('active');
         }}
-        setInterval(nextSlide, 12000); 
-        setTimeout(() => {{ location.reload(); }}, 3600000);
+
+        setInterval(nextSlide, 10000); 
+        setTimeout(() => {{ location.reload(); }}, 3600000); // Reload nach 1h
     </script>
 </body>
 </html>
     """
+    
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html_content)
 
 if __name__ == "__main__":
-    all_news = get_umag_hr() + get_24sata_umag() + get_index_umag()
-    generate_html(all_news)
+    data = get_istrain_news()
+    generate_html(data)
