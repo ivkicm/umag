@@ -180,7 +180,7 @@ def generate_html(news):
             current = (current + 1) % slides.length;
             slides[current].classList.add('active');
         }}
-        setInterval(nextSlide, 15000);
+        setInterval(nextSlide, 20000);
         setTimeout(() => {{ location.reload(); }}, 3600000);
     </script>
 </body>
