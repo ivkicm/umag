@@ -17,14 +17,37 @@
         .slide {
             position: absolute; width: 100%; height: 100%;
             display: none; 
-            grid-template-columns: 0.9fr 1.1fr; 
-            align-items: center; gap: 50px; padding: 40px;
+            flex-direction: column;
+            padding: 30px 40px;
         }
-        .slide.active { display: grid; animation: fadeIn 0.8s ease-in; }
+        .slide.active { display: flex; animation: fadeIn 0.8s ease-in; }
+
+        /* HEADER ÜBER DEM BILD */
+        .slide-header {
+            display: flex; gap: 25px; align-items: center; 
+            margin-bottom: 20px; /* Abstand zum Bild/Text Bereich */
+        }
+        
+        .source-badge { 
+            border: 4px solid white; color: white; padding: 5px 20px; border-radius: 10px;
+            font-weight: 900; font-size: 2.4rem; text-transform: uppercase; letter-spacing: 2px;
+            line-height: 1;
+        }
+        
+        .pub-time { color: white; font-family: 'JetBrains Mono'; font-size: 2.4rem; font-weight: 700; }
+
+        /* CONTENT BEREICH */
+        .slide-body {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr; 
+            gap: 50px;
+            align-items: start; /* WICHTIG: Text fängt oben bündig mit Bild an */
+            height: 100%;
+        }
 
         /* LINKE SEITE: BILD */
         .image-side { 
-            width: 100%; height: 88vh; 
+            width: 100%; height: 78vh; 
             border-radius: 30px; overflow: hidden;
             border: 4px solid #333; box-shadow: 0 20px 60px rgba(0,0,0,0.8);
         }
@@ -32,19 +55,9 @@
 
         /* RECHTE SEITE: TEXT */
         .text-side { 
-            display: flex; flex-direction: column; justify-content: center;
+            display: flex; flex-direction: column;
+            padding-top: 0; /* Stellt sicher, dass kein interner Offset da ist */
         }
-
-        .meta-line { display: flex; gap: 25px; align-items: center; margin-bottom: 30px; }
-        
-        /* Badge jetzt in weißer Schrift und ohne ISTRAIN */
-        .source-badge { 
-            border: 4px solid white; color: white; padding: 5px 20px; border-radius: 10px;
-            font-weight: 900; font-size: 2.4rem; text-transform: uppercase; letter-spacing: 2px;
-        }
-        
-        /* Uhrzeit in weißer Schrift */
-        .pub-time { color: white; font-family: 'JetBrains Mono'; font-size: 2.4rem; font-weight: 700; }
 
         .title { 
             font-size: 4.8rem; font-weight: 900; line-height: 1.05; 
@@ -54,8 +67,8 @@
         }
 
         .description {
-            font-size: 2.8rem; color: #ccc; line-height: 1.35;
-            display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden;
+            font-size: 3.0rem; color: #ccc; line-height: 1.35;
+            display: -webkit-box; -webkit-line-clamp: 8; -webkit-box-orient: vertical; overflow: hidden;
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -64,142 +77,162 @@
 <body>
     
         <div class="slide active">
-            <div class="image-side">
-                <img src="https://istrain.hr/data/images/2025-12-22/24663_609-470225226-1099760335488362-6311179045864647110-n-iff_kf.jpg" alt="News Image">
+            <div class="slide-header">
+                <span class="source-badge">UMAG</span>
+                <span class="pub-time">24.12. 22:05</span>
             </div>
-            <div class="text-side">
-                <div class="meta-line">
-                    <span class="source-badge">UMAG</span>
-                    <span class="pub-time">24.12. 22:05</span>
+            <div class="slide-body">
+                <div class="image-side">
+                    <img src="https://istrain.hr/data/images/2025-12-22/24663_609-470225226-1099760335488362-6311179045864647110-n-iff_kf.jpg" alt="News Image">
                 </div>
-                <div class="title">Ho! Ho! Ho! Run slavi deset godina: Umag ovog petka domaćin najveselije blagdanske utrke u Istri</div>
-                <div class="description">Sredstva prikupljena od kotizacija bit će donirana umaškom skloništu za životinje, a kućni ljubimci su, kao i prethodnih godina, dobrodošli sudionici i vjerni navijači uz stazu.</div>
+                <div class="text-side">
+                    <div class="title">Ho! Ho! Ho! Run slavi deset godina: Umag ovog petka domaćin najveselije blagdanske utrke u Istri</div>
+                    <div class="description">Sredstva prikupljena od kotizacija bit će donirana umaškom skloništu za životinje, a kućni ljubimci su, kao i prethodnih godina, dobrodošli sudionici i vjerni navijači uz stazu.</div>
+                </div>
             </div>
         </div>
         
         <div class="slide ">
-            <div class="image-side">
-                <img src="https://istrain.hr/data/images/2025-06-10/11864_viber-image-2025-06-10-15-01-15_kf.jpg" alt="News Image">
+            <div class="slide-header">
+                <span class="source-badge">UMAG</span>
+                <span class="pub-time">22.12. 09:02</span>
             </div>
-            <div class="text-side">
-                <div class="meta-line">
-                    <span class="source-badge">UMAG</span>
-                    <span class="pub-time">22.12. 09:02</span>
+            <div class="slide-body">
+                <div class="image-side">
+                    <img src="https://istrain.hr/data/images/2025-06-10/11864_viber-image-2025-06-10-15-01-15_kf.jpg" alt="News Image">
                 </div>
-                <div class="title">Bacao petarde i vozio prejak romobil: Maloljetnik zaradio prijavu, uključilo se i socijalno</div>
-                <div class="description">Policija je od maloljetnika oduzela električni romobil i pirotehnička sredstva te protiv njega pokrenula prekršajni postupak pred nadležnim sudom zbog prekršaja iz Zakona o sigurnosti prometa na cestama i Zakona o eksplozivnim tvarima te proizvodnji i prometu oružja.</div>
+                <div class="text-side">
+                    <div class="title">Bacao petarde i vozio prejak romobil: Maloljetnik zaradio prijavu, uključilo se i socijalno</div>
+                    <div class="description">Policija je od maloljetnika oduzela električni romobil i pirotehnička sredstva te protiv njega pokrenula prekršajni postupak pred nadležnim sudom zbog prekršaja iz Zakona o sigurnosti prometa na cestama i Zakona o eksplozivnim tvarima te proizvodnji i prometu oružja.</div>
+                </div>
             </div>
         </div>
         
         <div class="slide ">
-            <div class="image-side">
-                <img src="https://istrain.hr/data/images/2024-12-27/674_pxl-171220-31201532_kf.jpg" alt="News Image">
+            <div class="slide-header">
+                <span class="source-badge">UMAG</span>
+                <span class="pub-time">21.12. 11:42</span>
             </div>
-            <div class="text-side">
-                <div class="meta-line">
-                    <span class="source-badge">UMAG</span>
-                    <span class="pub-time">21.12. 11:42</span>
+            <div class="slide-body">
+                <div class="image-side">
+                    <img src="https://istrain.hr/data/images/2024-12-27/674_pxl-171220-31201532_kf.jpg" alt="News Image">
                 </div>
-                <div class="title">Kod maloljetnika u blizini škole pronađena pirotehnika! Policija obavijestila i Socijalnu!</div>
-                <div class="description">Umaška policija zatekla je u petak, 19. prosinca, u blizini osnovne škole u Umagu maloljetnika koji je upravljao električnim romobilom snage 2000 W te kod sebe imao pirotehnička sredstva, zbog čega su mu romobil i pirotehnika oduzeti, a protiv njega se pokreće prekršajni postupak.</div>
+                <div class="text-side">
+                    <div class="title">Kod maloljetnika u blizini škole pronađena pirotehnika! Policija obavijestila i Socijalnu!</div>
+                    <div class="description">Umaška policija zatekla je u petak, 19. prosinca, u blizini osnovne škole u Umagu maloljetnika koji je upravljao električnim romobilom snage 2000 W te kod sebe imao pirotehnička sredstva, zbog čega su mu romobil i pirotehnika oduzeti, a protiv njega se pokreće prekršajni postupak.</div>
+                </div>
             </div>
         </div>
         
         <div class="slide ">
-            <div class="image-side">
-                <img src="https://istrain.hr/data/images/2025-12-16/24239_1735761005-2161_kf.jpg" alt="News Image">
+            <div class="slide-header">
+                <span class="source-badge">UMAG</span>
+                <span class="pub-time">20.12. 17:23</span>
             </div>
-            <div class="text-side">
-                <div class="meta-line">
-                    <span class="source-badge">UMAG</span>
-                    <span class="pub-time">20.12. 17:23</span>
+            <div class="slide-body">
+                <div class="image-side">
+                    <img src="https://istrain.hr/data/images/2025-12-16/24239_1735761005-2161_kf.jpg" alt="News Image">
                 </div>
-                <div class="title">Gdje dočekati Novu 2026. u Istri? Evo tko nastupa i gdje se sve slavi...</div>
-                <div class="description">Od dočeka u podne do velikih večernjih koncerata, istarski gradovi i ove godine nude raznolike programe i poznata glazbena imena za ulazak u Novu 2026. godinu.</div>
+                <div class="text-side">
+                    <div class="title">Gdje dočekati Novu 2026. u Istri? Evo tko nastupa i gdje se sve slavi...</div>
+                    <div class="description">Od dočeka u podne do velikih večernjih koncerata, istarski gradovi i ove godine nude raznolike programe i poznata glazbena imena za ulazak u Novu 2026. godinu.</div>
+                </div>
             </div>
         </div>
         
         <div class="slide ">
-            <div class="image-side">
-                <img src="https://istrain.hr/data/images/2024-12-24/578_zakupnine-fotografija-large-large-large_kf.jpg" alt="News Image">
+            <div class="slide-header">
+                <span class="source-badge">UMAG</span>
+                <span class="pub-time">20.12. 12:13</span>
             </div>
-            <div class="text-side">
-                <div class="meta-line">
-                    <span class="source-badge">UMAG</span>
-                    <span class="pub-time">20.12. 12:13</span>
+            <div class="slide-body">
+                <div class="image-side">
+                    <img src="https://istrain.hr/data/images/2024-12-24/578_zakupnine-fotografija-large-large-large_kf.jpg" alt="News Image">
                 </div>
-                <div class="title">Umag i ove godine rekorder po iznosima božićnica!</div>
-                <div class="description">Grad Umag i ove godine najpotrebitijim umirovljenicima isplaćuje 600 eura, čime i dalje drži rekord u visini božićnica i potvrđuje status svojevrsnog socijalnog branda.</div>
+                <div class="text-side">
+                    <div class="title">Umag i ove godine rekorder po iznosima božićnica!</div>
+                    <div class="description">Grad Umag i ove godine najpotrebitijim umirovljenicima isplaćuje 600 eura, čime i dalje drži rekord u visini božićnica i potvrđuje status svojevrsnog socijalnog branda.</div>
+                </div>
             </div>
         </div>
         
         <div class="slide ">
-            <div class="image-side">
-                <img src="https://istrain.hr/data/images/2025-08-04/15470_policija-rovinj1_kf.jpg" alt="News Image">
+            <div class="slide-header">
+                <span class="source-badge">UMAG</span>
+                <span class="pub-time">18.12. 17:23</span>
             </div>
-            <div class="text-side">
-                <div class="meta-line">
-                    <span class="source-badge">UMAG</span>
-                    <span class="pub-time">18.12. 17:23</span>
+            <div class="slide-body">
+                <div class="image-side">
+                    <img src="https://istrain.hr/data/images/2025-08-04/15470_policija-rovinj1_kf.jpg" alt="News Image">
                 </div>
-                <div class="title">Prometna nesreća u Umagu: pijani vozač udario u stup pa pobjegao!</div>
-                <div class="description">Ubrzo je zatečen od strane policijskih službenika koji su utvrdili kako upravlja automobilom pod utjecajem alkohola od 1.78 promila te mu je određen smještaj u posebne prostorije policije.</div>
+                <div class="text-side">
+                    <div class="title">Prometna nesreća u Umagu: pijani vozač udario u stup pa pobjegao!</div>
+                    <div class="description">Ubrzo je zatečen od strane policijskih službenika koji su utvrdili kako upravlja automobilom pod utjecajem alkohola od 1.78 promila te mu je određen smještaj u posebne prostorije policije.</div>
+                </div>
             </div>
         </div>
         
         <div class="slide ">
-            <div class="image-side">
-                <img src="https://istrain.hr/data/images/2024-12-23/473_petarde-large_kf.jpg" alt="News Image">
+            <div class="slide-header">
+                <span class="source-badge">UMAG</span>
+                <span class="pub-time">18.12. 12:42</span>
             </div>
-            <div class="text-side">
-                <div class="meta-line">
-                    <span class="source-badge">UMAG</span>
-                    <span class="pub-time">18.12. 12:42</span>
+            <div class="slide-body">
+                <div class="image-side">
+                    <img src="https://istrain.hr/data/images/2024-12-23/473_petarde-large_kf.jpg" alt="News Image">
                 </div>
-                <div class="title">Policija u Istri ponovno ulovila maloljetnike sa zabranjenom pirotehnikom, prijava ide i socijalnom!</div>
-                <div class="description">Policijski službenici obavijestili su roditelje koji su pristupili u policijsku postaju po svoju djecu, a upozoreni su na svoje roditeljske dužnosti i odgovornosti nadziranja djece.</div>
+                <div class="text-side">
+                    <div class="title">Policija u Istri ponovno ulovila maloljetnike sa zabranjenom pirotehnikom, prijava ide i socijalnom!</div>
+                    <div class="description">Policijski službenici obavijestili su roditelje koji su pristupili u policijsku postaju po svoju djecu, a upozoreni su na svoje roditeljske dužnosti i odgovornosti nadziranja djece.</div>
+                </div>
             </div>
         </div>
         
         <div class="slide ">
-            <div class="image-side">
-                <img src="https://istrain.hr/data/images/2025-12-16/24221_novouredjena-setnica-dom-zdravlja-os-marije-i-line-umag-8_kf.jpg" alt="News Image">
+            <div class="slide-header">
+                <span class="source-badge">UMAG</span>
+                <span class="pub-time">16.12. 10:29</span>
             </div>
-            <div class="text-side">
-                <div class="meta-line">
-                    <span class="source-badge">UMAG</span>
-                    <span class="pub-time">16.12. 10:29</span>
+            <div class="slide-body">
+                <div class="image-side">
+                    <img src="https://istrain.hr/data/images/2025-12-16/24221_novouredjena-setnica-dom-zdravlja-os-marije-i-line-umag-8_kf.jpg" alt="News Image">
                 </div>
-                <div class="title">Foto: Službeno otvorena uređena šetnica u samom centru Umaga</div>
-                <div class="description">Riječ je o važnoj gradskoj pješačkoj površini dužine 300-njak metara u hladovini prekrasnog drvoreda, a projekt obuhvaća kompletnu rekonstrukciju dotrajale šetnice čime se značajno podiže razina sigurnosti.</div>
+                <div class="text-side">
+                    <div class="title">Foto: Službeno otvorena uređena šetnica u samom centru Umaga</div>
+                    <div class="description">Riječ je o važnoj gradskoj pješačkoj površini dužine 300-njak metara u hladovini prekrasnog drvoreda, a projekt obuhvaća kompletnu rekonstrukciju dotrajale šetnice čime se značajno podiže razina sigurnosti.</div>
+                </div>
             </div>
         </div>
         
         <div class="slide ">
-            <div class="image-side">
-                <img src="https://istrain.hr/data/images/2025-12-12/23930_umag-sadnja-stabala-2025-3_kf.jpg" alt="News Image">
+            <div class="slide-header">
+                <span class="source-badge">UMAG</span>
+                <span class="pub-time">12.12. 09:12</span>
             </div>
-            <div class="text-side">
-                <div class="meta-line">
-                    <span class="source-badge">UMAG</span>
-                    <span class="pub-time">12.12. 09:12</span>
+            <div class="slide-body">
+                <div class="image-side">
+                    <img src="https://istrain.hr/data/images/2025-12-12/23930_umag-sadnja-stabala-2025-3_kf.jpg" alt="News Image">
                 </div>
-                <div class="title">Sadnja 368 novih stabala: Umag kontinuirano i odgovorno širi zelene površine sustavnim akcijama sadnje</div>
-                <div class="description">"Sadnja novih stabala koja se provodi u kontinuitetu na području Umaga, predstavlja najljepši poklon našoj zajednici, budućim generacijama, zdravlju naših sugrađana i ljepoti našega grada – našeg Umaga", poručuju iz Grada Umaga.</div>
+                <div class="text-side">
+                    <div class="title">Sadnja 368 novih stabala: Umag kontinuirano i odgovorno širi zelene površine sustavnim akcijama sadnje</div>
+                    <div class="description">"Sadnja novih stabala koja se provodi u kontinuitetu na području Umaga, predstavlja najljepši poklon našoj zajednici, budućim generacijama, zdravlju naših sugrađana i ljepoti našega grada – našeg Umaga", poručuju iz Grada Umaga.</div>
+                </div>
             </div>
         </div>
         
         <div class="slide ">
-            <div class="image-side">
-                <img src="https://istrain.hr/data/images/2025-12-10/23842_gradska-uprava_kf.jpg" alt="News Image">
+            <div class="slide-header">
+                <span class="source-badge">UMAG</span>
+                <span class="pub-time">10.12. 18:53</span>
             </div>
-            <div class="text-side">
-                <div class="meta-line">
-                    <span class="source-badge">UMAG</span>
-                    <span class="pub-time">10.12. 18:53</span>
+            <div class="slide-body">
+                <div class="image-side">
+                    <img src="https://istrain.hr/data/images/2025-12-10/23842_gradska-uprava_kf.jpg" alt="News Image">
                 </div>
-                <div class="title">Usvojen najveći Proračun u povijesti Umaga! Prioritet su djeca, obrazovanje i infrastruktura</div>
-                <div class="description">Riječ je najvećem i razvojno najznačajnijem Proračunu u povijesti grada, u ukupnom iznosu od 60.810.500,00 eura.</div>
+                <div class="text-side">
+                    <div class="title">Usvojen najveći Proračun u povijesti Umaga! Prioritet su djeca, obrazovanje i infrastruktura</div>
+                    <div class="description">Riječ je najvećem i razvojno najznačajnijem Proračunu u povijesti grada, u ukupnom iznosu od 60.810.500,00 eura.</div>
+                </div>
             </div>
         </div>
         
@@ -213,7 +246,7 @@
             current = (current + 1) % slides.length;
             slides[current].classList.add('active');
         }
-        setInterval(nextSlide, 15000); // 15 Sekunden pro News für bessere Lesbarkeit
+        setInterval(nextSlide, 15000);
         setTimeout(() => { location.reload(); }, 3600000);
     </script>
 </body>
