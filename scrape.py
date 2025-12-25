@@ -1,3 +1,4 @@
+
 import requests
 from bs4 import BeautifulSoup
 import os
@@ -8,7 +9,6 @@ import re
 def format_umag_date(date_str, time_str):
     """Wandelt 22.12.2025 und 09:02 in 22.12. 09:02 um."""
     try:
-        # Nur Tag und Monat behalten (ersten zwei Teile von DD.MM.YYYY)
         day_month = ".".join(date_str.split('.')[:2]) + "."
         return f"{day_month} {time_str}"
     except:
@@ -28,17 +28,15 @@ def get_news():
         
         articles = soup.select('article.news-item')
         
-        for art in articles[:10]: # Top 10 News
+        for art in articles[:10]:
             try:
                 title_el = art.select_one('.news-item-title a')
                 desc_el = art.select_one('.news-item-description')
                 img_el = art.select_one('img')
                 
-                # Datum und Uhrzeit aus den spezifischen Feldern extrahieren
                 time_val = art.select_one('.time-published').get_text(strip=True) if art.select_one('.time-published') else ""
                 date_val = art.select_one('.date-published').get_text(strip=True) if art.select_one('.date-published') else ""
                 
-                # Bild Pfad korrigieren
                 img_path = img_el.get('src') if img_el else ""
                 if img_path.startswith('/'):
                     img_url = base_url + img_path
@@ -46,10 +44,7 @@ def get_news():
                     img_url = img_path
 
                 if title_el:
-                    # Formatiere Datum zu: 12.12. 09:12
                     display_time = format_umag_date(date_val, time_val)
-                    
-                    # Hilfs-Zeitstempel für die Sortierung (ISO Format)
                     try:
                         sort_dt = datetime.strptime(f"{date_val} {time_val}", "%d.%m.%Y %H:%M")
                     except:
@@ -64,7 +59,6 @@ def get_news():
                     })
             except: continue
 
-        # Chronologisch sortieren (Neueste zuerst)
         news_data.sort(key=lambda x: x['sort_dt'], reverse=True)
         return news_data
     except Exception as e:
@@ -82,16 +76,18 @@ def generate_html(news):
 
         slides_html += f"""
         <div class="slide {active_class}">
-            <div class="image-side">
-                <img src="{img_url}" alt="News Image">
+            <div class="slide-header">
+                <span class="source-badge">UMAG</span>
+                <span class="pub-time">{item['display_time']}</span>
             </div>
-            <div class="text-side">
-                <div class="meta-line">
-                    <span class="source-badge">UMAG</span>
-                    <span class="pub-time">{item['display_time']}</span>
+            <div class="slide-body">
+                <div class="image-side">
+                    <img src="{img_url}" alt="News Image">
                 </div>
-                <div class="title">{item['title']}</div>
-                <div class="description">{item['desc']}</div>
+                <div class="text-side">
+                    <div class="title">{item['title']}</div>
+                    <div class="description">{item['desc']}</div>
+                </div>
             </div>
         </div>
         """
@@ -115,14 +111,37 @@ def generate_html(news):
         .slide {{
             position: absolute; width: 100%; height: 100%;
             display: none; 
-            grid-template-columns: 0.9fr 1.1fr; 
-            align-items: center; gap: 50px; padding: 40px;
+            flex-direction: column;
+            padding: 30px 40px;
         }}
-        .slide.active {{ display: grid; animation: fadeIn 0.8s ease-in; }}
+        .slide.active {{ display: flex; animation: fadeIn 0.8s ease-in; }}
+
+        /* HEADER ÜBER DEM BILD */
+        .slide-header {{
+            display: flex; gap: 25px; align-items: center; 
+            margin-bottom: 20px; /* Abstand zum Bild/Text Bereich */
+        }}
+        
+        .source-badge {{ 
+            border: 4px solid white; color: white; padding: 5px 20px; border-radius: 10px;
+            font-weight: 900; font-size: 2.4rem; text-transform: uppercase; letter-spacing: 2px;
+            line-height: 1;
+        }}
+        
+        .pub-time {{ color: white; font-family: 'JetBrains Mono'; font-size: 2.4rem; font-weight: 700; }}
+
+        /* CONTENT BEREICH */
+        .slide-body {{
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr; 
+            gap: 50px;
+            align-items: start; /* WICHTIG: Text fängt oben bündig mit Bild an */
+            height: 100%;
+        }}
 
         /* LINKE SEITE: BILD */
         .image-side {{ 
-            width: 100%; height: 88vh; 
+            width: 100%; height: 78vh; 
             border-radius: 30px; overflow: hidden;
             border: 4px solid #333; box-shadow: 0 20px 60px rgba(0,0,0,0.8);
         }}
@@ -130,19 +149,9 @@ def generate_html(news):
 
         /* RECHTE SEITE: TEXT */
         .text-side {{ 
-            display: flex; flex-direction: column; justify-content: center;
+            display: flex; flex-direction: column;
+            padding-top: 0; /* Stellt sicher, dass kein interner Offset da ist */
         }}
-
-        .meta-line {{ display: flex; gap: 25px; align-items: center; margin-bottom: 30px; }}
-        
-        /* Badge jetzt in weißer Schrift und ohne ISTRAIN */
-        .source-badge {{ 
-            border: 4px solid white; color: white; padding: 5px 20px; border-radius: 10px;
-            font-weight: 900; font-size: 2.4rem; text-transform: uppercase; letter-spacing: 2px;
-        }}
-        
-        /* Uhrzeit in weißer Schrift */
-        .pub-time {{ color: white; font-family: 'JetBrains Mono'; font-size: 2.4rem; font-weight: 700; }}
 
         .title {{ 
             font-size: 4.8rem; font-weight: 900; line-height: 1.05; 
@@ -152,8 +161,8 @@ def generate_html(news):
         }}
 
         .description {{
-            font-size: 2.8rem; color: #ccc; line-height: 1.35;
-            display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden;
+            font-size: 3.0rem; color: #ccc; line-height: 1.35;
+            display: -webkit-box; -webkit-line-clamp: 8; -webkit-box-orient: vertical; overflow: hidden;
         }}
 
         @keyframes fadeIn {{ from {{ opacity: 0; }} to {{ opacity: 1; }} }}
@@ -171,7 +180,7 @@ def generate_html(news):
             current = (current + 1) % slides.length;
             slides[current].classList.add('active');
         }}
-        setInterval(nextSlide, 15000); // 15 Sekunden pro News für bessere Lesbarkeit
+        setInterval(nextSlide, 15000);
         setTimeout(() => {{ location.reload(); }}, 3600000);
     </script>
 </body>
